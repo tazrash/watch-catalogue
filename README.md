@@ -26,6 +26,8 @@ curl --location --request POST 'http://localhost:8080/checkout' \
 
 ]'
 
+5. Junit Test Case: can be executed by WatchCatalougeApplicationTests.class
+
 =========================================================================================================================
 
 we have created a simple spring boot application in which we have used HsqlDB, java8 features junit test case execution in order to deliver watch catalouge project.
