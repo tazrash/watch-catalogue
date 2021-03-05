@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.catalouge.service.Test
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.029 s <<< FAILURE! - in com.catalouge.service.Test
+test  Time elapsed: 0.025 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Not yet implemented
+	at com.catalouge.service.Test.test(Test.java:9)
+
