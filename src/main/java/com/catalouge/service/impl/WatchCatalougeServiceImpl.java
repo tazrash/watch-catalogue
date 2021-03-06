@@ -3,8 +3,9 @@ package com.catalouge.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.SortedMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ import com.catalouge.service.WatchCatalougeService;
 
 @Service
 public class WatchCatalougeServiceImpl implements WatchCatalougeService{
+	
+	private static final Logger LOGGER=LoggerFactory.getLogger(WatchCatalougeServiceImpl.class);
 
 	@Autowired
 	private WatchCatalougeRepository watchCatalougeRepository;
@@ -27,8 +30,10 @@ public class WatchCatalougeServiceImpl implements WatchCatalougeService{
 
 	@Override
 	public CheckOutApiResponse checkout(List<String> catalogs) throws Exception {
+		LOGGER.info("Inside checkout method of serviceimpl");
 		CheckOutApiResponse response = new CheckOutApiResponse();
 		HashMap<String, Integer> catalogMap =  countService(catalogs);
+		LOGGER.info("Count service successful implementation");
 		double finalPrice = 0 ;
 
 		for(HashMap.Entry<String, Integer> cat : catalogMap.entrySet()) {
@@ -36,12 +41,17 @@ public class WatchCatalougeServiceImpl implements WatchCatalougeService{
 			if(watchEntity.isPresent()) {
 				WatchCatalouge watch = watchEntity.get();
 				if(watch.isDiscountEligible()) {
+					LOGGER.info(" discounted item = "+cat.getKey());
 					double discountedCount =  (cat.getValue()/watch.getDiscountCount());
 					double nonDiscountedCount =  (cat.getValue() % watch.getDiscountCount());
 					finalPrice =  (finalPrice+(discountedCount*watch.getDiscountPrice())+(nonDiscountedCount*watch.getSingleUnitPrice()));
 				}else{
+					LOGGER.info("Non discounted item = "+cat.getKey());
 					finalPrice =  (finalPrice+(watch.getSingleUnitPrice()*cat.getValue()));
 				}
+			}else {
+				LOGGER.info("Item not present = "+cat.getKey());
+				throw new Exception(cat.getKey()+" not present with us");
 			}
 
 		}	
